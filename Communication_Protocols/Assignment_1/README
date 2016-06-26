@@ -1,0 +1,46 @@
+/*
+	Theodor Stoican
+	323CA
+*/
+README
+
+Tema1 a fost foarte interesanta, avand in vedere, in primul rand, ca am avut de implementat
+o metoda de corectie destul de folosita (din ce am citit) in comunicatii (Hamming). Voi reda,
+in cele de mai jos, explicatii cu privire la implementare si la functionalitatea client-server:
+
+*Pentru a-mi da seama exact cum functioneaza clientul, tot ce a trebuit sa fac a fost sa 
+printez payload-ul din mesajul trimis de client, ca mai apoi sa reflect respectarea 
+cerintelor sale in cod. Practic, am realizat acest lucru testand cuvinte cheie din 
+mesajele trimise de client, pentru a implementa o anumita functionalitate in functie
+de mesaj.
+
+*Clientul poate trimite, in esenta, 2 tipuri de mesaje : corecte si eronate. Daca mesajul este
+corect, folosind sprintf, pun in payload textul "ack" si trimit mesajul clientului, in cazul 
+ultimelor 3 task-uri. La primul task, prin contrast, nu se mai trimite ack-ul. In cazul detectarii 
+mesajelor eronate, am realizat cateva functii separate care verifica bitul de paritate (in cazul
+task-ului 3) sau corecteaza mesajul folosind Hamming (in cazul task-ului 4). Referitor
+la corectarea mesajului codificat Hamming, am adoptat urmatoarea strategie : am extras
+bitii de paritate, am calculat sindromul calculand valorile aferente fiecarui bit de
+paritate, dupa care am extras bitii de date si i-am corectat in functie de valoarea 
+sindromului. Am folosit pentru aceasta, in esenta, operatii si masti pe biti. In cazul 
+bitului de paritate, tot ce am facut a fost sa aplic operatia xor intre bitii de date si
+sa compar rezultatul cu bitul de paritate de la inceputul mesajului. Daca rezultatul
+coincide, atunci se trimite ack, altfel nack.
+
+*La Hamming, similar cu decodificarea, am realizat si codificarea. Am creat o functie,
+transform_bytes, care primeste un octet ca argument si codifica extragand biti de date, 
+calculand bitii de paritate pe baza lor si injectand valorile in 2 octeti nou construiti,
+returnand valorile ca un vector.
+
+Dificultati:
+-o greseala in care m-am afundat timp de cateva ore s-a rezumat la a adauga inca un 1
+la dimensiunea payload-ului
+-o alta greseala ce aparea frecvent la decodificarea Hamming era calcularea gresita
+a sindromului (deoarece nu luam in calcul bitii de paritate in calcularea sumelor)
+-in fine, am parantezat gresit expresii boolene (ceea ce ducea la valori mai mari decat
+1 si 0 ) :)
+
+Per total, a fost o tema foarte faina (m-a ajutat, in mare, sa inteleg mai bine 
+transmisia mesajelor in contextul aparitiei unor erori pe canal). 
+
+Theodor

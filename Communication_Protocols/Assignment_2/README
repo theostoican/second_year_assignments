@@ -1,0 +1,58 @@
+/*
+	Theodor Stoican
+	323CA
+*/
+
+README
+
+Tema2 a fost destul de practica, avand in vedere ca am avut de implementat
+un sistem de backup, lucru, de altfel, pe larg utilizat. O sa redau, in cele 
+ce urmeaza diverse detalii de implementare (mentionez ca am implementat toate
+functiile cu exceptia download, cu toate ca in cod exista o tentativa):
+
+*Multiplexarea se bazeaza pe scheletul de laborator, si am procedat, in esenta,
+intr-o maniera similara. Clientul este cel care initiaza o "tranzactie" prin 
+diverse comenzi. In cadrul comenzilor login, logout, mentin, la nivel de server
+map-uri si multi-map-uri (daca este cazul) pentru a tine evidenta clientilor
+conectati (chiar si din sesiuni diferite). De asemenea, la nivel de client,
+pastrez diverse variabile de stare (connected, waitForMessage etc.) care imi 
+actualizeaza prompt-ul sau imi da un anumit comportament la nivelul clientului
+(functia upload, de exemplu).
+*Pentru a implementa functiile share si unshare, modific la nivelul folosesc o
+structura multimap, care pastreaza, in calitate de chei, numele utilizatori, iar 
+ca valori, fisierele partajate de acestia. In momentul in care comut pe modul
+SHARED sau PRIVATE, adaug sau elimin o pereche <utilizator, fisier> din aceasta
+structura.
+*Pentru implementarea login, logout, mentin mai multi vectori. Mentin un vector,
+clienti, pentru a tine minte ce utilizatori sunt conectati la un moment dat(mai
+degraba, pentru a tine minte socket-urile aferente fiecarui client conectat la
+server). Mai mentin un map, connectedUsers, care pastreaza perechi de tipul
+<socket, name>, unde name este numele utilizatorului (ex. Doru). Atat utilizatorii
+initiali cat si fisierele partajate initial le pastrez in 2 map-uri, create o 
+data cu citirea celor 2 fisiere de configurare ale server-ului. Comunicarea client-
+server la login , respectiv la logout, se realizeaza prin pachete transmise 
+server-ului (trimit efectiv mesajele integrale primite de la input) la care acesta
+raspunde cu cuvinte cheie ("authorized", "finishLogout"), urmand sa le interpretez
+la nivel de client si sa afisez mesajele corespunzatoare sau sa modific prompt-ul.
+*In implementarea functiei upload, am procedat in felul urmator: am introdus file
+descriptorul aferent fisierului din care citesc in multimea fdmax, utilizand FD_SET.
+Practic, dupa ce tratez cazurile in care descriptorul activat in cadrul apelului
+select este fie 0 (stdin), fie sockfd(server-ul), am un for care parcurge acei
+descriptori de fisier aferenti comenzilor de upload efectuate. In acel moment, 
+citesc practic din fisier si ii trimit serverului pachete folosind un anumit
+protocol (ii trimit mai intai cuvantul cheie upload, dupa care dimensiunea, iar 
+in cele un chunk de 4096 octeti care reprezinta pachetul in sine).
+*In implementarea getuserlist, getfilelist, folosesc diverse functii, precum
+opendir, readdir, intr-un while pentru a extrage fisierele dintr-un anumit
+director. De asemenea, folosesc "stat" pentru a extrage dimensiunea fisierului.
+La nivelul server-ului formez sirul, concatenand numele de fisiere si toate
+celelalte atribute, pe care clientul doar il printeaza, fara o alta procesare.
+*In cazul comenzilor delete si quit, folosesc unlink pentru delete, precedat
+de un test cu functia access pentru a ma asigura ca fisierul exista si trimit
+apoi un mesaj la client, pe care acesta il printeaza. La quit, pastrez o 
+variabila de stare, quit, care imi indica daca clientul trebuie sau nu
+sa inchida si sa-i notifice serverului acest lucru.
+
+Per total, sper ca am acoperit o descriere decenta.
+
+Theodor

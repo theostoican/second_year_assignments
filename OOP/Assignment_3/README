@@ -1,0 +1,43 @@
+/**
+*Theodor STOICAN
+*323CA
+*/
+
+README
+
+Tema 3 a fost super interesanta. Chiar am invatat cateva chestii super utile in legatura cu interpretarea codului
+si, prin urmare, cred ca a fost foarte relevanta pentru ce se intampla cu codul scris de noi intr-un limbaj cand il
+compilam/interpretam. Acum,legat de implementare, am sa precizez cateva detalii:
+
+*Cum am construit AST-ul?
+In esenta, am construit clase diferite pentru fiecare tip de nod (ConstantNode, SquareNode etc.). Apoi, pornind de
+aici, pastrez in fiecare clasa, care descrie comportamentul unui tip de nod, un ArrayList de elemente ASTNode (ASTNode
+este o interfata care ofera un mod de configurare comuna a tuturor nodurilor din arbore). Practic, in felul acesta,
+in main(), am un nod radacina (ProgramNode), de la care pot accesa toti fiii si, prin urmare, tot arborele. La parsare,
+construiesc AST-ul in functie de keyword-urile elementelor citite(second_person, scene etc.), la final, obtinand arborele
+dorit.
+*Cum aplic Visitor?
+In principal, fiecare nod din arbore implementeaza interfata Visitable, ce pune la dispozitie o metoda accept care va fi 
+utilizata de catre fiecare visitor(care, la randul lor, implementeaza interfata Visitor). Practic, am 2 visitori, unul care 
+afiseaza AST-ul si unul care il interpreteaza si care genereaza outputul dorit. Am sa explic cum functioneaza fiecare
+pe scurt. La ambii visitori(PrintVisitor, InterpretVisitor), apelez metoda accept pe nodul radacina . 
+Din acest punct, voi apela, din cadrul metodei visit care va fi apelata, accept pe celelalte elemente, care
+la randul lor vor apela metoda visit aferenta tipului de nod care apeleaza. Asadar, folosind acest mecanism, de apelare
+a metodei accept pe copiii nodului curent, din cadrul clasei de tip Visitor, se genereaza outputul dorit.
+La visitorul de interpretare, voi porni tot din nodul radacina, doar ca voi pastra o variabila (currentResult),
+care imi va retine rezultatul ultimei operatii facute. In cazul nodului de tip assignment, apelarea metodei accept
+pe copii se face de la dreapta la stanga (pentru a putea face atribuirea) nodului de tip LvalNode cu operatia efectuata
+"pe partea dreapta". De asemenea, pastrez un ArrayList care retine valorile fiecarui caracter, de unde voi extrage
+informatiile necesare pentru nodurile de tip Output.
+
+Alte detalii de implementare:
+*nu stiu daca am procedat corect, dar am modificat semnatura metodei parse pentru a modulariza mai bine codul (metoda 
+parse() aplica cei doi visitori pe nodul radacina, generand output-ul dorit in fisierele aferent).
+*personajul curent il verific folosind un vector de string-uri cu 2 elementele (cele 2 personaje din scena), pe care 
+aplic operatia modulo. De asemenea, mai pastrez si un ArrayList cu toate personajele, pentru a ma asigura ca un personaj
+introdus in scena exista(este declarat la inceput). 
+
+Cam acestea ar fi detaliile, care (am considerat) ca trebuie descrise. Sper ca am acoperit o descriere decenta si 
+plauzibila a implementarii. A fost, asa cum am spus mai sus, o tema interesanta :).
+
+Theodor

@@ -1,0 +1,39 @@
+/**
+README
+Theodor Stoican   323CA
+*/
+
+Tema4 a fost super interesanta. A fost cam singura dintre teme unde chiar a fost
+nevoie sa ma gandesc mai mult la design si, cu toate ca probabil nu e c
+cel mai reusit, am invatat cateva lucruri importante despre cum sa rezolvi o problema
+in paradigma POO.
+
+Acum, in ceea ce priveste efectiv tema, voi reda, punctual, cateva detalii de implementare:
+
+*Prima problema de care m-am izbit a fost modul in care a trebuit sa stochez obiectul de tip
+Mock in cadrul clasei Mockito, pentru a-l putea folosi in interiorul celorlalte metode, cu 
+mentiunea ca aceasta clasa, Mockito, nu este parametrizata. M-am chinuit ce m-am chinuit si 
+nu am gasit alta solutie, decat aceea de a stoca mock-ul ca Mock<?,?> si, in momentul in 
+care il folosesc efectiv, sa parametrizez metoda efectiva, facand apoi cast la Mock<A,B>,
+unde A,B sunt parametrii de genericitate ai metodei (cu certitudinea ca la runtime, acesta nu
+poate fi un cast ilegal). Acest lucru genereaza un warning insa, pe care l-am "tratat" totusi,
+cu SupressWarning, in speranta ca este in regula.
+*Pentru a permite existenta mai multor mock-uri, pastrez un array static de Mock-uri in
+clasa Mockito, iar pentru a tine evidenta lor, folosesc o clasa State, care gestioneaza 
+starile in care se afla Mockito. Spre exemplu, daca folosesc un watcher, metoda isWatching din 
+State va returna true. De asemenea, in State pastrez o referinta la Mock, pentru a sti ce mock
+este in executie in momentul de fata.
+*Referitor la pattern-uri de design, folosesc Observer si Strategy. Observer, pentru a sti de 
+cate ori s-a apelat execute si de a reseta numaratoarea, in momentul in care se "porneste" un
+watcher. Strategy e util pentru a aplica o anumita strategie in cadrul metodei verify. Clasa
+Mockito agrega un obiect de tip strategie, si e instantiat cu tipul de strategie dorit la 
+apelarea uneia dintre metodele precizate in enunt(atLeastOnce, exactlyOnce sau times). In
+acest fel, procesul e automatizat, iar in clasa Mock, nu se apeleaza decat metoda checkIfEqual,
+aferenta fiecarei strategii.
+
+**Bonus: Am generat in total 13 teste folosind framework-ul JUnit, acoperind mai toate 
+cazurile de functionare (zic eu), inclusiv unele care nu fac parte dintre cele existente 
+in cadrul checker-ului local. Practic, rulandu-mi tema cu testele din JUnit, nu am avut
+probleme nici cu testele de pe vmchecker.
+
+Per total, a fost tema interesanta, care m-a ajutat sa gandesc un design OO decent :).

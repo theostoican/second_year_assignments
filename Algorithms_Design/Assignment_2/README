@@ -1,0 +1,47 @@
+/*
+323CA
+Theodor Stoican
+*/
+
+README
+
+Tema 2 a fost destul de interesanta, avand in vedere ca ne-am familiarizat mai 
+bine cu parcurgeri, Kruskall si diverse optimizari. O sa redau, in cele de mai
+jos, cateva detalii relevante cu privire la implementare:
+
+*La problema 1, am implementat Kruskall cu paduri de multimi disjuncte, asemanator
+cu problemele de la laborator. Kruskall are o complexitate de O(ElogV).
+Daca am vrea sa aflam Q arbori de acoperire, varianta banala ar fi sa apelam Kruskall 
+de Q ori, obtinand o complexitate finala de O(Q*E*logV), care nu ar intra in timp. 
+Prin urmare, sunt necesare optimizari. Spre exemplu, observam ca o data ce am calculat 
+un AMA, devine inutil sa recalculam un altul. Practic, este suficient sa calculam 
+muchia de cost maxim pe un lant dintre 2 noduri, sa o eliminam si sa o introducem
+muchia q_i in AMA. A gasi muchia de cost maxim dintre 2 noduri x si y se rezuma la 
+a gasi muchia de cost maxim de la x la lca(x,y) si de la y la lca(x,y). Practic,
+ar trebui sa optimizam calcularea lca-ului (complexitatea naiva ar fi de O(N)), 
+iar query-urile de tipul "vreau muchia de cost maxim dintre 2 noduri" sa fie realizate
+in timp logaritmic. In principiu, pentru a realiza acest lucru, am folosit ideea de la
+2 probleme de pe infoarena : Lowest Common Ancestor(http://www.infoarena.ro/problema/lca)
+si Stramosi (http://www.infoarena.ro/problema/stramosi). Ideea ar fi sa pastrez
+un vector T[k][i], unde i este nodul i, iar k este o putere a lui 2. Semnificatia
+este: T[k][i] este al 2^k-lea parinte al lui i. Evident, in acest fel, lca-ul
+va fi gasit in timp logaritmic. Mai mult inca, am adaptat aceasta idee pentru a 
+calcula si muchiile intr-o maniera similara. Algoritmul functioneaza in felul urmator:
+Dupa determinarea AMA-ului, se parcurge arbore obtinut, folosind un DFS, pentru a seta
+nivelurile, parintii imediati (k = 2^0, aici) si muchiile imediate - O(N+M) complexitate.
+Dupa aceasta, iterez prin vectorul de q muchii, pentru care trebuie sa determin solutii
+si daca muchia exista deja in arbore, afisez costul, altfel, apelez o functie, "lca", care 
+imi determina muchia de cost maxim dintre nodurile care reprezinta capete ale muchiei q_i.
+Practic, tot acest proces are complexitate de Q*logN.
+*La problema 2, incep prin a considera tot graful neorientat. Ideea algoritmului consta
+in a descompune graful in componente conexe printr-o parcurgere DFS si de a verifica
+daca avem cicluri in fiecare componenta conexa. Detectarea ciclurilor o realizez prin
+mentinerea ca parametru la apelul functiei a parintelui nodului curent si, in 
+momentul in care gasesc un nod visitat si care nu e parintele nodului curent,
+atunci am gasit un ciclu. In main, in functie de rezultatul dfs-ului (variabila
+cycle poate fi fie true, fie false), contorizez numarul total de noduri izolate.
+Finalmente, complexitatea algoritmului este aceeasi cu a DFS-ului deci O(M+N).
+
+In mare, cam aceasta ar fi. Sper ca am acoperit o descriere decenta a implementarii.
+
+Theodor

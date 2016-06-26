@@ -1,0 +1,34 @@
+/**
+*Theodor STOICAN
+*323CA
+*/
+
+README
+
+Aceasta tema a fost destul de interesanta. A trebuit sa stau ceva sa ma prind cum functioneaza Enigma si sa fac o
+implementare eficienta. Mecanismul de double stepping, in special, nu a fost nu tocmai intuitiv. In final, i-am dat 
+de cap si am ales sa structurez totul in felul urmator:
+*toate componentele masinii Enigma (plugboard, rotoare si reflector) extind doua interfete, si anume: Configuration
+si PipelineElement
+*interfata PipelineElement modeleaza structura de pipeline a masinii si permite gestionarea comunicarii intre
+componente folosind doua metode.
+*Configuration are rolul de a unifica o actiune comuna tuturor componentelor, si anume alegerea setarilor aferente
+fiecarui element (maparea efectiva a literelor, in cazul rotoarelor).
+
+Mai departe, este important de precizat faptul ca tot ce tine de codificare se realizeaza in cadrul masinii. Cu alte 
+cuvinte, e suficienta instantierea masinii si apelarea unei metode care va cripta textul dat. Modelul de pipeline este 
+realizat prin doua metode care preiau si dau informatie (input/output). Practic, se parcurge element cu element in cadrul
+masinii si se transmite output-ul unuia ca input altui element. In felul acesta, daca am dori sa extindem modelul masinii 
+si sa cream mai multe rotoare (de exemplu), modelul creat ar trebui sa functioneze in acelasi mod, fara probleme.
+
+Probleme/dificultati la implementare:
+In ceea ce priveste problemele pe care le-am intampinat de-a lungul implementarii, pot spune ca, pe langa multitudinea de
+linkuri vizitate pentru a-mi da seama cum functioneaza masina, am petrecut ceva timp pentru a crea un design OOP decent.
+Sa folosesc sau nu Factory? Dar Visitor pentru pipeline? Cum fac sa modelez elementele? Au ele ceva comun? - sunt doar
+cateva intrebari pe care mi le-am pus de-a lungul implementarii. Prin urmare, forma actuala, cu cele 2 interfete este 
+forma finala la care am ajuns. Nu e necesarmente cea mai eficiena, dar este cea care mi s-a parut mie ca functioneaza
+si are un design decent
+
+Sper ca am acoperit o descriere decenta si plauzibila a implementarii. A fost, per total, o tema interesanta.
+
+Theodor

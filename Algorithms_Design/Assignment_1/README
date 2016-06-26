@@ -1,0 +1,78 @@
+/*
+	Theodor Stoican
+	323 CA
+*/
+
+README
+
+Mentionez ca as vrea sa mi se ia in considerare in calcularea punctajului problemele 
+1 si 3.
+
+Revenind la subiect, tema a fost destul de interesanta, in primul rand, fiindca 
+m-a ajutat sa-mi insusesc niste notiuni dobandite in cadrul laboratoarelor, 
+dar si fiindca problemele s-au rezumat la a gandi logic si nu neaparat la 
+partea de implementare. O sa descriu in cele ce urmeaza solutiile problemelor 
+si implementarea acestora:
+
+*La prima problema, ideea a fost urmatoarea : plec dintr-un capat si caut dublura
+elementului la care sunt acum, incepand cu celalalt capat. In implementarea problemei,
+eu plec din partea dreapta a cuvantului si caut perechile incepand cu primul element 
+din partea stanga a cuvantului. In momentul in care gasesc perechea, efectuez swap-uri
+din locul in care o gasesc pana la locul unde ar trebui sa fie. La urmatorul pas, voi
+ajunge la urmatorul numar din dreapta. Voi cauta si pentru acesta perechea, incepand
+tot din stanga, cu mentiunea ca, de aceasta data, cautarea va incepe pornind de la 
+ultima pereche gasita la ultimul pas, pentru a nu interfera cu cele gasite pana acum.
+Daca gasesc un element care nu are pereche, atunci el va trebui sa fie, la final,
+in mijlocul cuvantului. In acest caz, voi sari peste acea litera si voi efectua in
+continuare celelalte schimbari, urmand ca abia la final sa revin si sa mut elementul,
+care nu are pereche, in mijloc. De asemenea, este util de mentionat ca, in cazul in 
+care voi gasi un al doilea element fara pereche, atunci, voi incheia executia, cu 
+precizarea ca nu pot forma un palindrom (dat fiind ca exista 2 litere pentru care nu
+am pereche, neputand sa le pun pe amandoua in centru). 
+Tot aici, precizez ca am considerat cazuri separate pentru situatiile in care
+cuvantul are un numar impar de litere si cuvantul are un numar par de litere
+(pentru a sti daca sa ma astept sau nu la aparitia unei litere fara pereche).
+Complexitatea temporala este O(n^2), intrucat in a worst-case scenario, as itera
+pentru fiecare element de n ori ca sa ajung la perechea sa.
+
+*La cea de-a doua problema, am incercat, intai si intai, o abordare Greedy, care
+trecea 3 teste(cred) doar ca am gasit un caz, pentru care aceasta abordare nu mai
+mergea : 1 2 3 4 5
+		 7 1 2 3 4. Abordarea mea itera prin vectorul-varianta pana cand il gasea 
+pe 7, doar ca acesta nu venea niciodata, asa ca il substituia. De la acest pas 
+incolo, el substituia fiecare cifra ramasa in vectorul initial, mergand pe aceleasi
+considerente si amanand inserarea/insertia. Evident ca solutia optima era eliminarea
+lui 7 si inserarea altei cifre, doar ca Greedy-ul meu nu vedea acest lucru. Prin 
+urmare, m-am gandit ca solutia trebuie, necesarmente, sa fie legata de programare
+dinamica. M-am apropiat destul de mult de a gasi recurenta si, concomitent, am gasit,
+cautand referinte la probleme pe internet, distanta Levenshtein. Ideea de la aceasta 
+problema consta in a determina care dintre urmatoarele 3 distante este mai mica:
+fie 2 indici i,j, atunci d[i][j] = min(d[i-1][j]+1,d[i][j-1]+1, d[i-1][j-1] + 1 
+- daca variante[i]==initial[j]). Practic, cele 3 cazuri de mai sus sugereaza 
+eliminarea (d[i-1][j]+1), insertia (d[i][j-1]+1) si substitutia (d[i-1][j-1]+1).
+d[i][j] reprezinta distanta (numarul de operatii efectuate asupra sirului initial)
+de la primele j elemente din sirul initial pana la primele i elemente din primul sir.
+Cazul de baza ar fi reprezentat de indicii de 0 din fiecare vector.
+Complexitatea temporala a algoritmului este de O(m*n), unde m-nr.de elemente din 
+vectorii-varianta, iar n-nr de elemente din vectorul initial.
+
+*La problema 3, ideea se rezuma la a determina numarul minim de cablari dintre
+doi indici i si j. Practic, avand doi indici i si j, vrem sa determinam minimul dintre
+urmatoarele sume(dar care ocupa un numar de pini cat mai mare): nr minim de cablari
+intre i,i "+" nr minim de cablari intre i+1,j; nr minim de cablari intre i,i+1 "+"
+nr minim de cablari intre i+2, j; s.a.m.d. Minimul dintre aceste sume, in conditiile
+specificate va fi, la randul lui, comparat cu urmatoarul rezultat: nr.de cablari
+dintre i+1 si j-1 "+" 1 (pentru a acoperi si cazul cand legam un cablu intre i si j).
+Implementarea se reduce la a calcula distanta pentru elemente adiacente (cazul de baza-
+punem 3 unde avem 1,0 sau 0,1 adiacente), apoi din 2 in 2, din 3 in 3 si asa mai departe.
+Rezultatul final va fi in elementul d[0][2*n-1].
+Complexitatea temporala a algoritmului este de O(n^3), intrucat avem 3 for-uri, cu cel
+din functia findMinimumInterval.
+
+Bibliografie:
+-https://en.wikipedia.org/wiki/Levenshtein_distance
+
+Cam acestea ar fi explicatiile pe care le-am considerat utile pentru tema. Sper ca am
+acoperit detaliile relevante. 
+
+Theodor

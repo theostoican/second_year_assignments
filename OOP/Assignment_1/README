@@ -1,0 +1,36 @@
+/**
+*Theodor Stoican
+*323CA
+*/
+
+README
+
+Tema 1 a fost destul de interesanta. Inca de la SD voiam sa creez cateva aplicatii basic
+care se bazeaza pe grafuri, printre care si o retea sociala. Asa ca odata cu tema aceasta,
+visul meu e aproape implinit. :)
+
+Diverse detalii de implementare:
+
+*Am preferat sa lucrez cu campuri private peste tot, respectand, astfel, principiul incapsularii
+datelor. Folosesc in clasa User setteri si getteri, de unde imi "trag" campurile in Network.
+*Am implementat DFS si BFS in clasa User, deoarece mi s-a aparut ca daca as fi procedat altfel, 
+as fi ingreunat mult mai mult codul si as fi folosit mai multe resurse. Astfel, aplic BFS/DFS pe
+nodul curent(this) si studiez prietenii lui prin accesare directa (this.friends), deoarece sunt
+in clasa User.
+*Pentru comenzile de tip print, am creat metode diverse care, in functie de ce trebuie printat,
+se comporta intr-un anume mod. As fi putut face un tip de overloading, desi nu cred ca as fi 
+acoperit toate cazurile.
+*La cazul "print strength", am tratat bfs-ul pentru fiecare user din comunitate, pastrand 
+rezultatul intr-un vector de distante. Apoi, caut maximul din vectorul rezultat si procedez
+analog pentru urmatorii useri. Dupa fiecare pas fac maximul dintre maximul actual si maximul
+precedent.
+*De-a lungul codului, am incercat sa tratez cat mai multe cazuri limita, precum print-uri cand 
+nu exista liste de priteni, cand nu exista array de useri s.a.m.d.
+*Initial, clasa User implementa interfata Comparable, ceea ce nu era tocmai ok, fiindca adaugarea
+in arraylist-ul de useri functiona redundant (sortam dupa fiecare adaugare). Am renuntat la ideea
+asta si am reschimbat ideea prin folosirea functiei add(index, element), care shifteaza la dreapta
+dupa adaugarea la o anumia pozitie.
+*In momentul in care am de facut anumite operatii pe retea, unele metode din Network se folosesc
+de diverse metode din User. Spre exemplu, in cazul unfriend, care se foloseste de removeselffromfriends.
+*Folosesc, de-a lungul codului, anumite metode private in mai multe locuri, pentru a evita 
+repetitia codului.
